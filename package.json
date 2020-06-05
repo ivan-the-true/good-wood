@@ -1,0 +1,25 @@
+{
+  "name": "good-wood",
+  "version": "1.0.0",
+  "description": "A site for rating campgrounds",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivan-the-true/good-wood.git"
+  },
+  "author": "Trevor Love",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivan-the-true/good-wood/issues"
+  },
+  "homepage": "https://github.com/ivan-the-true/good-wood#readme",
+  "dependencies": {
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  }
+}
