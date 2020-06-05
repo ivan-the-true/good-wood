@@ -1,12 +1,32 @@
 <%- include("partials/header") %> 
 
-<% campgrounds.forEach(campground => { %>
-  <div>
-    <h3><%= campground.name%></h2>
-    <ul>
-      <li><img src="<%= campground.image%>" alt=""></li>
-    </ul>  
+<div class="container">
+  <header class="jumbotron">
+    <h1>Welcome to Good Wood</h1>
+    <p>Check out some of the best campings spots in Georgia!</p>
+    <p>
+      <a class="btn btn-primary btn-lg" href="campgrounds/new">Add a new campground</a>
+    </p>
+  </header>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h3>Our Most Popular Sites!</h3>
+    </div>
   </div>
-<% }) %>
+  
+  <div class="row">
+    <% campgrounds.forEach(campground => { %>
+      <div class="col-md-3 col-sm-6">
+        <div class="thumbnail">
+          <img src="<%= campground.image%>" alt="">
+          <div class="caption">
+            <h4><%= campground.name%></h4>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div> 
+</div>
   
 <%- include("partials/header") %> 
