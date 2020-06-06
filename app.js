@@ -1,8 +1,36 @@
-const express = require("express");
-const app = express();
-const request = require("request-promise");
-const bodyParser = require("body-parser");
+const express = require("express"),
+      app = express(),
+      request = require("request-promise"),
+      bodyParser = require("body-parser"),
+      mongoose = require("mongoose")
+ 
+mongoose.set('useUnifiedTopology', true);
+mongoose.set('useNewUrlParser', true);
+mongoose.connect("mongodb://localhost/good_wood");
 
+//schema setup
+const campgroundSchema = new mongoose.Schema({
+  name: String,
+  image: String
+});
+
+const Campground = mongoose.model("Campground", campgroundSchema);
+
+// Campground.create(
+//   {
+//     name: "Providence Canyon",
+//     image: "https://images.unsplash.com/photo-1573681620389-69cab4c82ae4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+//   },
+//   (err, campground) => {
+//     if (err) {
+//       console.log("Error:");
+//       console.log(err);
+//     } else {
+//       console.log("Campground created! Details: ");
+//       console.log(campground);
+//     }
+//   }
+// );
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
@@ -15,28 +43,34 @@ app.get("/", (req, res) => {
 });
 
 app.get("/campgrounds", (req, res) => {
-  res.render("campgrounds", {campgrounds: campgrounds});
+  Campground.find({}, (err, allCampgrounds) => {
+    if (err) {
+      console.log("Error:");
+      console.log(err);
+    } else {
+      res.render("campgrounds", {campgrounds: allCampgrounds})
+    }
+  });
 });
 
 app.post("/campgrounds", (req, res) => {
-  var name = req.body.name;
-  var image = req.body.image;
-  var newCampground = { name: name, image: image}
-  campgrounds.push(newCampground);
-  res.redirect("/campgrounds");
+  let name = req.body.name;
+  let image = req.body.image;
+  let newCampground = new Campground(
+    { 
+      name: name, 
+      image: image
+    });
+  newCampground.save((err) => {
+    if (err) {
+      console.log("Error: ");
+      console.log(err);
+    } else {
+      res.redirect("/campgrounds");
+    }
+  })
 });
 
 app.get("/campgrounds/new", (req, res) => {
   res.render("new");
 });
-
-var campgrounds = [
-  {
-    name: "Cloudland Canyon",
-    image: "https://images.unsplash.com/photo-1522889126620-04b9f7196cd0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-  },
-  {
-    name: "Providence Canyon",
-    image: "https://images.unsplash.com/photo-1573681620389-69cab4c82ae4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-  },
-]
