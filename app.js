@@ -3,30 +3,17 @@ const express = require("express"),
       request = require("request-promise"),
       bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
-      Campground = require("./models/campground");
+      Campground = require("./models/campground"),
+      seedDB = require("./seeds");
       //Comment = require("./models/comment")
- 
+
+seedDB();
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.connect("mongodb://localhost/good_wood");
 
 
-// Campground.create(
-//   {
-//     name: "Providence Canyon",
-//     image: "https://images.unsplash.com/photo-1573681620389-69cab4c82ae4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-//     description: "So much providence. So much canyon. Highly recommend!"
-//   },
-//   (err, campground) => {
-//     if (err) {
-//       console.log("Error:");
-//       console.log(err);
-//     } else {
-//       console.log("Campground created! Details: ");
-//       console.log(campground);
-//     }
-//   }
-// );
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
@@ -74,7 +61,7 @@ app.get("/campgrounds/new", (req, res) => {
 });
 
 app.get("/campgrounds/:id", (req, res) => {
-  Campground.findById(req.params.id, (err, foundCampground) => {
+  Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
     if (err) {
       console.log(err);
     } else {
