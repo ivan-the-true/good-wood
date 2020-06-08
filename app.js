@@ -2,20 +2,14 @@ const express = require("express"),
       app = express(),
       request = require("request-promise"),
       bodyParser = require("body-parser"),
-      mongoose = require("mongoose")
+      mongoose = require("mongoose"),
+      Campground = require("./models/campground");
+      //Comment = require("./models/comment")
  
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.connect("mongodb://localhost/good_wood");
 
-//schema setup
-const campgroundSchema = new mongoose.Schema({
-  name: String,
-  image: String,
-  description: String
-});
-
-const Campground = mongoose.model("Campground", campgroundSchema);
 
 // Campground.create(
 //   {
@@ -87,5 +81,4 @@ app.get("/campgrounds/:id", (req, res) => {
       res.render("show", {campground: foundCampground});
     }
   });
-
 });
