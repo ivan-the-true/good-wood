@@ -11,6 +11,7 @@ const express = require("express"),
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.connect("mongodb://localhost/good_wood");
+app.use(express.static(__dirname + "/public"));
 
 
 
