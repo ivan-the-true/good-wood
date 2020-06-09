@@ -5,13 +5,30 @@ const express = require("express"),
       mongoose = require("mongoose"),
       Campground = require("./models/campground"),
       seedDB = require("./seeds");
-      Comment = require("./models/comment")
+      Comment = require("./models/comment"),
+      passport = require("passport"),
+      LocalStrategy = require("passport-local"),
+      User = require("./models/user");
 
-// seedDB();
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.connect("mongodb://localhost/good_wood");
 app.use(express.static(__dirname + "/public"));
+// seedDB();
+
+///Passport config
+app.use(require("express-session")({
+  secret: "Maisy is the cutest kitty in the world.",
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 
 
@@ -108,3 +125,22 @@ app.post("/campgrounds/:id/comments", (req, res) => {
     }
   })
 })
+
+//Authentication routes
+app.get("/register", (req, res) => {
+  res.render("register")
+});
+
+app.post("/register", (req, res) => {
+  let newUser = new User({username: req.body.username});
+  User.register(newUser, req.body.password, (err, user) => {
+    if (err) {
+      console.log('Error! - ');
+      return res.render("/register");
+    } else {
+      passport.authenticate("local")(req, res, () => {
+        res.redirect("/campgrounds");
+      })
+    }
+  });
+});
