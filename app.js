@@ -158,3 +158,8 @@ app.post(
       failureRedirect: "/login"
     }),
 );
+
+app.get("logout", (req, res) => {
+  req.logout();
+  res.redirect("/campgrounds");
+});
