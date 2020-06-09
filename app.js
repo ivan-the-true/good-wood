@@ -144,3 +144,17 @@ app.post("/register", (req, res) => {
     }
   });
 });
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post(
+  "/login",
+  passport.authenticate( //middleware
+    "local", //auth strategy
+    {
+      successRedirect: "/campgrounds", 
+      failureRedirect: "/login"
+    }),
+);
