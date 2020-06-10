@@ -22,7 +22,11 @@ router.post("/", isLoggedIn, (req, res) => {
     { 
       name: name, 
       image: image,
-      description: description
+      description: description,
+      author: {
+        id: req.user._id,
+        username: req.user.username
+      }
     });
   newCampground.save((err) => {
     if (err) {
