@@ -3,6 +3,7 @@ const express = require("express"),
       request = require("request-promise"),
       bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
+      methodOverride = require("method-override"),
       Campground = require("./models/campground"),
       seedDB = require("./seeds");
       Comment = require("./models/comment"),
@@ -16,6 +17,7 @@ const commentRoutes = require("./routes/comments"),
 
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
 mongoose.connect("mongodb://localhost/good_wood");
 app.use(express.static(__dirname + "/public"));
 // seedDB();
@@ -37,6 +39,8 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use(methodOverride("_method"));
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
