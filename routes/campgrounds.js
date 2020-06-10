@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
       console.log("Error: ");
       console.log(err);
     } else {
-      res.redirect("/");
+      res.redirect("/campgrounds/" + newCampground._id);
     }
   })
 });
