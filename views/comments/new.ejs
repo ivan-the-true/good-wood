@@ -7,8 +7,8 @@
         <img src="<%= campground.image %>" alt="">
       </div>
     </div>
-    <h1 style="text-align: center">Leave a comment about <%= campground.name %></h1>
-    <div style="width: 30%; margin: 35px auto; ">
+    <div class="col-sm-9 col-md-6">
+      <h1 style="text-align: center">Leave a comment about <%= campground.name %></h1>
       <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
         <div class="form-group">
           <textarea class="form-control" name="comment[text]" rows="5" placeholder="text"></textarea>
@@ -17,9 +17,9 @@
           <button class="btn btn-large btn-success btn-block">Submit</button>
         </div>
       </form>
-      <a href="/campgrounds/<%= campground._id %>">Go Back</a>
     </div>
   </div>
+  <a href="/campgrounds/<%= campground._id %>">Go Back</a>
 </div>
 
 <%- include("../partials/footer") %> 
