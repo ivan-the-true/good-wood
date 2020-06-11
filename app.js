@@ -19,7 +19,17 @@ const commentRoutes = require("./routes/comments"),
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
-mongoose.connect("mongodb://localhost/good_wood");
+// mongoose.connect("mongodb://localhost");
+mongoose.connect("mongodb+srv://admin:_is97JwcpFkTvKF@cluster0-tqeit.mongodb.net/good_wood?retryWrites=true&w=majority", 
+  {
+    useNewUrlParser: true, 
+    useCreateIndex: true
+  }
+).then(() => {
+  console.log("connected to DB!");
+}).catch(err => {
+  console.log("Error", err.message);
+});
 app.use(express.static(__dirname + "/public"));
 // seedDB();
 
