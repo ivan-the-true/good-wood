@@ -13,9 +13,7 @@ const commentRoutes = require("./routes/comments"),
       campgroundRoutes = require("./routes/campgrounds"),
       indexRoutes = require("./routes/index");
 ;
-mongoose.set('useUnifiedTopology', true);
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
+
 // mongoose.connect("mongodb://localhost");
 mongoose.connect("mongodb+srv://admin:_is97JwcpFkTvKF@cluster0-tqeit.mongodb.net/good_wood?retryWrites=true&w=majority", 
   {
@@ -27,6 +25,10 @@ mongoose.connect("mongodb+srv://admin:_is97JwcpFkTvKF@cluster0-tqeit.mongodb.net
 }).catch(err => {
   console.log("Error", err.message);
 });
+
+mongoose.set('useUnifiedTopology', true);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
 app.use(express.static(__dirname + "/public"));
 // seedDB();
 
