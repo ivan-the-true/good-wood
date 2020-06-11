@@ -1,13 +1,10 @@
 const express = require("express"),
       app = express(),
-      request = require("request-promise"),
       bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
       flash = require("connect-flash"),
       methodOverride = require("method-override"),
-      Campground = require("./models/campground"),
-      seedDB = require("./seeds");
-      Comment = require("./models/comment"),
+      seedDB = require("./seeds"),
       passport = require("passport"),
       LocalStrategy = require("passport-local"),
       User = require("./models/user");
@@ -15,7 +12,7 @@ const express = require("express"),
 const commentRoutes = require("./routes/comments"),
       campgroundRoutes = require("./routes/campgrounds"),
       indexRoutes = require("./routes/index");
-
+;
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
