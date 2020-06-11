@@ -1,10 +1,11 @@
 const express = require("express");
-const router = express.Router({mergeParams: true});
+const router = express.Router({mergeParams: true}),
+      middleware = require("../middleware");
 
 const Campground = require("../models/campground"),
       Comment = require("../models/comment");
 
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, foundCampground) => {
     if (err) {
       console.log('Error! - ');
@@ -15,7 +16,7 @@ router.get("/new", isLoggedIn, (req, res) => {
   })
 });
 
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, foundCampground) => {
     if (err) {
       console.log('Error! - ');
@@ -41,11 +42,49 @@ router.post("/", isLoggedIn, (req, res) => {
   })
 });
 
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()){
-    return next();
-  }
-  res.redirect("/login");
-}
+router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if (err) {
+      console.log('Error! - ');
+      console.log(err);
+    } else {
+      Comment.findById(req.params.comment_id, (err2, foundComment) => {
+        if (err2) {
+          console.log('Error! - ');
+          console.log(err2);
+        } else {
+          console.log(foundComment._id);
+          res.render("comments/edit",
+          {
+            campground: foundCampground, 
+            comment: foundComment
+          });
+        }
+      });
+    }
+  })
+});
+
+router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
+  Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, updatedComment) => {
+    if (err) {
+      res.redirect("back");
+    } else {
+      res.redirect("/campgrounds/" + req.params.id);
+    }
+  });
+});
+
+router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
+  Comment.findByIdAndDelete(req.params.comment_id, (err, deletedComment) => {
+    if (err) {
+      console.log('Error! - ');
+      console.log(err);
+    } else {
+      console.log(deletedComment);
+      res.redirect("/campgrounds/" + req.params.id);
+    }
+  })
+})
 
 module.exports = router;
