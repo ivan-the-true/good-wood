@@ -7,9 +7,11 @@ const Campground = require("../models/campground"),
 
 router.get("/new", middleware.isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, foundCampground) => {
-    if (err) {
+    if (err || !foundCampground) {
       console.log('Error! - ');
       console.log(err);
+      req.flash("error", "Campground not found.")
+      res.redirect("back");
     } else {
       res.render("comments/new", {campground: foundCampground});
     }
@@ -45,9 +47,11 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => {
   Campground.findById(req.params.id, (err, foundCampground) => {
-    if (err) {
+    if (err || !foundCampground) {
       console.log('Error! - ');
       console.log(err);
+      req.flash("error", "Campground not found.")
+      res.redirect("back");
     } else {
       Comment.findById(req.params.comment_id, (err2, foundComment) => {
         if (err2) {
