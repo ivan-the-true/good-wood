@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router({mergeParams: true});
 const Campground = require("../models/campground"),
-      Comment = require("../models/comment"),
       middleware = require("../middleware");
 
 router.get("/", (req, res) => {
@@ -9,6 +8,8 @@ router.get("/", (req, res) => {
     if (err) {
       console.log("Error:");
       console.log(err);
+      req.flash("error", "Sorry, something went wrong.");
+      res.redirect("back");
     } else {
       res.render("campgrounds/index", {campgrounds: allCampgrounds, currentUser: req.user})
     }
@@ -33,7 +34,10 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     if (err) {
       console.log("Error: ");
       console.log(err);
+      req.flash("error", "Sorry, something went wrong.")
+      res.redirect("back");
     } else {
+      req.flash("success", "Campground added successfully!")
       res.redirect("/campgrounds/" + newCampground._id);
     }
   })
@@ -63,9 +67,11 @@ router.put("/:id", middleware.checkCampgroundOwnership, (req, res) => {
   Campground.findOneAndUpdate(req.params.id, req.body.campground, (err, updatedCampground) => {
     if (err) {
       console.log("error: " + req.body.campground);
+      req.flash("error", "Sorry, something went wrong.")
       res.redirect("/campgrounds");
     } else {
       console.log(req.body.campground);
+      req.flash("success", "Campground updated successfully!")
       res.redirect("/campgrounds/" + req.params.id);
     }
   })
@@ -76,7 +82,11 @@ router.delete("/:id", middleware.checkCampgroundOwnership, (req, res) => {
     if (err) {
       console.log('Error! - ');
       console.log(err);
+      req.flash("error", "Sorry, something went wrong.")
+      res.redirect("back");
     } else {
+      console.log(deletedCampground);
+      req.flash("success", "Campground deleted successfully!");
       res.redirect("/campgrounds")
     }
   })

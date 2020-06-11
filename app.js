@@ -3,6 +3,7 @@ const express = require("express"),
       request = require("request-promise"),
       bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
+      flash = require("connect-flash"),
       methodOverride = require("method-override"),
       Campground = require("./models/campground"),
       seedDB = require("./seeds");
@@ -28,7 +29,7 @@ app.use(require("express-session")({
   resave: false,
   saveUninitialized: false
 }));
-
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -37,6 +38,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
   next();
 });
 

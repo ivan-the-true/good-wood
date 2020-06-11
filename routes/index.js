@@ -1,10 +1,8 @@
 const express = require("express"),
-       router = express.Router(),
+      router = express.Router(),
       passport = require("passport");
 
-const Campground = require("../models/campground"),
-      User = require("../models/user"),
-      Comment = require("../models/comment");
+const User = require("../models/user");
 
 router.get("/", (req, res) => {
   res.render("home");
@@ -18,10 +16,11 @@ router.post("/register", (req, res) => {
   let newUser = new User({username: req.body.username});
   User.register(newUser, req.body.password, (err, user) => {
     if (err) {
-      console.log('Error! - ');
-      return res.render("/register");
+      req.flash("error", err.message);
+      return res.render("register");
     } else {
       passport.authenticate("local")(req, res, () => {
+        req.flash("success", "Congrats! You've been signed up and logged in!")
         res.redirect("/campgrounds");
       })
     }
@@ -44,6 +43,7 @@ router.post(
 
 router.get("/logout", (req, res) => {
   req.logout();
+  req.flash("success", "You've been logged out.")
   res.redirect("/campgrounds");
 });
 
