@@ -12,8 +12,11 @@ const express = require("express"),
 const commentRoutes = require("./routes/comments"),
       campgroundRoutes = require("./routes/campgrounds"),
       indexRoutes = require("./routes/index");
+      dotenv = require('dotenv');
 
-mongoose.connect("mongodb+srv://admin:_is97JwcpFkTvKF@cluster0-tqeit.mongodb.net/goodwood?retryWrites=true&w=majority", 
+dotenv.config();
+//mongoose.connect("mongodb://localhost/goodwood");
+mongoose.connect(process.env.DATABASE_URL, 
   {
     useNewUrlParser: true, 
     useCreateIndex: true,
@@ -58,6 +61,6 @@ app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
-app.listen((process.env.PORT || 5000), () => {
-  console.log("App is now listening on port 3000");
+app.listen((process.env.PORT || 3000), () => {
+  console.log("App is now listening on port " + process.env.PORT);
 });
