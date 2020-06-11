@@ -18,11 +18,13 @@ router.get("/", (req, res) => {
 
 router.post("/", middleware.isLoggedIn, (req, res) => {
   let name = req.body.name;
+  let price = req.body.price;
   let image = req.body.image;
   let description = req.body.description;
   let newCampground = new Campground(
     { 
       name: name, 
+      price: price,
       image: image,
       description: description,
       author: {
@@ -72,7 +74,6 @@ router.put("/:id", middleware.checkCampgroundOwnership, (req, res) => {
       req.flash("error", "Sorry, something went wrong.")
       res.redirect("/campgrounds");
     } else {
-      console.log(req.body.campground);
       req.flash("success", "Campground updated successfully!")
       res.redirect("/campgrounds/" + req.params.id);
     }

@@ -22,10 +22,11 @@
           <img src="<%= campground.image%>" alt="">
           <div class="caption">
             <h4><%= campground.name%></h4>
+            <p>
+              <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">Read more</a>
+            </p>
           </div>
-          <p>
-            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">Read more</a>
-          </p>
+          
         </div>
       </div>
     <% }) %>
