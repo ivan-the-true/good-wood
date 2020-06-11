@@ -13,8 +13,7 @@ const commentRoutes = require("./routes/comments"),
       campgroundRoutes = require("./routes/campgrounds"),
       indexRoutes = require("./routes/index");
 
-// mongoose.connect("mongodb://localhost");
-mongoose.connect("mongodb+srv://admin:_is97JwcpFkTvKF@cluster0-tqeit.mongodb.net/good_wood?retryWrites=true&w=majority", 
+mongoose.connect("mongodb+srv://admin:_is97JwcpFkTvKF@cluster0-tqeit.mongodb.net/goodwood?retryWrites=true&w=majority", 
   {
     useNewUrlParser: true, 
     useCreateIndex: true,
